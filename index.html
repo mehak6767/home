@@ -1,243 +1,164 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Unblocker Hub</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
-<style>
-:root{
-  --glass-bg: rgba(255,255,255,0.06);
-  --glass-border: rgba(255,255,255,0.14);
-  --accent: #ffcc00;
-  --muted: #cbd5e1;
-  --card-radius: 22px;
-}
-*{box-sizing:border-box}
-html,body{height:100%;margin:0;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,'Helvetica Neue',Arial;color:#fff}
-body{
-  background: url('bg.png') center/cover no-repeat fixed;
-  background-color:#071025;
-  -webkit-font-smoothing:antialiased;
-  -moz-osx-font-smoothing:grayscale;
-}
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Unblocker Hub</title>
 
-/* overlay so glass shows */
-.overlay{position:fixed;inset:0;background:rgba(6,8,12,0.45);pointer-events:none;z-index:0}
+  <style>
+    /* ====== BASE PAGE SETUP ====== */
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: url("bg.png") center/cover no-repeat fixed;
+      height: 100vh;
+      overflow: hidden;
+      color: white;
+    }
 
-/* topbar centered, auto-sizing */
-.topbar-wrap{position:fixed;left:50%;top:36px;transform:translateX(-50%);z-index:60}
-nav.topbar{
-  display:inline-flex;align-items:center;gap:18px;padding:10px 22px;border-radius:999px;
-  background:var(--glass-bg);backdrop-filter:blur(8px) saturate(150%) brightness(1.12);
-  border:1px solid var(--glass-border);box-shadow:0 8px 30px rgba(2,6,23,0.6);height:56px;
-}
-.topbar-link{color:#fff;text-decoration:none;font-weight:600;padding:6px 12px;border-radius:12px;transition:all .18s ease;display:inline-flex;align-items:center;gap:8px;font-size:15px}
-.topbar-link:hover{transform:translateY(-3px);color:var(--accent)}
-.topbar-link.active{background:rgba(255,204,0,0.12);color:var(--accent)}
+    /* dark overlay (UNCHANGED — your current opacity) */
+    .overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(6, 8, 12, 0.45);
+      pointer-events: none;
+      z-index: 0;
+    }
 
-/* logo positioned near left of topbar; position adjusted via JS */
-.logo{
-  position:fixed;width:64px;height:64px;border-radius:16px;background:rgba(255,255,255,0.06);
-  backdrop-filter:blur(10px) brightness(1.12);border:1px solid rgba(255,255,255,0.14);
-  box-shadow:0 10px 30px rgba(0,0,0,0.5);z-index:70;display:flex;align-items:center;justify-content:center;
-  overflow:hidden;
-}
+    /* ====== TOP BAR ====== */
+    .topbar {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      padding: 16px 30px;
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      z-index: 10;
+    }
 
-/* header area */
-.header{ text-align:center;padding:140px 20px 40px;z-index:10;position:relative;}
-.title{font-size:44px;margin:0 0 8px;letter-spacing:0.6px}
-.subtitle{color:var(--muted);margin:0;font-weight:500}
+    .logo {
+      width: 42px;
+      height: 42px;
+    }
 
-/* content */
-.container{max-width:1200px;margin:0 auto;padding:30px 20px 120px;position:relative;z-index:10}
-h2{color:var(--accent);margin:6px 0 24px;font-size:22px}
+    .nav-btn {
+      padding: 8px 18px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.25s;
+      backdrop-filter: blur(6px);
+      background: rgba(255, 255, 255, 0.05);
+    }
 
-/* grid/cards */
-.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:28px}
-.card{
-  background:var(--glass-bg);border-radius:var(--card-radius);padding:18px;border:1px solid var(--glass-border);
-  box-shadow:0 10px 30px rgba(2,6,23,0.6), inset 0 1px 0 rgba(255,255,255,0.02);
-  transition:transform .28s cubic-bezier(.2,.9,.2,1), box-shadow .28s;
-  transform-style:preserve-3d;
-  min-height:210px;display:flex;flex-direction:column;
-}
-.card:hover{box-shadow:0 30px 70px rgba(2,6,23,0.65),0 0 30px rgba(255,204,0,0.06)}
+    .nav-btn:hover {
+      background: rgba(255, 255, 255, 0.12);
+    }
 
-/* thumbnail */
-.thumb{width:100%;height:140px;border-radius:14px;background:#0b1220;overflow:hidden;display:block;flex-shrink:0;border:1px solid rgba(255,255,255,0.04)}
-.card img{width:100%;height:100%;object-fit:cover;display:block;border-radius:12px}
+    /* ====== MAIN GRID ====== */
+    .grid {
+      position: absolute;
+      top: 80px;
+      width: 100%;
+      height: calc(100vh - 80px);
+      padding: 20px 40px;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+      gap: 20px;
+      overflow-y: auto;
+      z-index: 5;
+    }
 
-/* name + desc */
-.card h3{margin:12px 0 6px;font-size:18px;color:#ffd965;transform-style:preserve-3d;transition:all .18s}
-.card h3:hover{text-shadow:0 6px 20px rgba(255,217,102,0.35); color:#fff}
-.card p{margin:0;color:var(--muted);font-size:14px;line-height:1.35;flex:1}
+    /* ====== OLD GAME CARD STYLE (RESTORED) ====== */
+    .card {
+      width: 100%;
+      height: 160px;
+      border-radius: 14px;
+      background: rgba(255, 255, 255, 0.06);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      box-shadow: 0 0 18px rgba(0, 0, 0, 0.35);
+      overflow: hidden;
+      cursor: pointer;
+      position: relative;
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+    }
 
-/* controls */
-.controls{display:flex;gap:10px;margin-top:12px}
-.btn{padding:10px 14px;border-radius:12px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);color:#fff;font-weight:600;cursor:pointer;transition:all .18s;backdrop-filter:blur(6px)}
-.btn.play{background:linear-gradient(90deg,#2dd36f,#21c26f);color:#021}
-.btn.fs{background:linear-gradient(90deg,#ff6fb0,#ff3ea1);color:#fff}
+    /* hover pop */
+    .card:hover {
+      transform: scale(1.06);
+      box-shadow: 0 0 30px rgba(0, 0, 0, 0.6);
+    }
 
-/* card inner for tilt */
-.card-inner{transform-origin:center;will-change:transform}
+    /* game image */
+    .card img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      pointer-events: none;
+    }
 
-/* footer */
-.footer{margin-top:40px;color:#9aa4b2;text-align:center;font-size:13px}
+    /* ====== NEW CURSOR-FOLLOW LIGHT GLOW ADDED ====== */
+    .card::before {
+      content: "";
+      position: absolute;
+      top: var(--y);
+      left: var(--x);
+      width: 140px;
+      height: 140px;
+      transform: translate(-50%, -50%);
+      background: radial-gradient(circle, rgba(255, 255, 255, 0.35), transparent 60%);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.2s ease;
+      border-radius: 50%;
+      filter: blur(20px);
+    }
 
-/* small screens */
-@media (max-width:720px){
-  .header{padding:100px 16px 30px}
-  .logo{width:56px;height:56px;border-radius:12px}
-}
-</style>
+    .card:hover::before {
+      opacity: 1;
+    }
+
+  </style>
 </head>
+
 <body>
-<div class="overlay"></div>
 
-<!-- logo (src set by JS from localStorage siteLogo or default) -->
-<img src="https://via.placeholder.com/120x120?text=Logo" class="logo" id="siteLogo" alt="logo">
+  <div class="overlay"></div>
 
-<div class="topbar-wrap"><nav class="topbar" id="topbar"></nav></div>
+  <!-- ====== TOP BAR ====== -->
+  <div class="topbar">
+    <img src="logo.png" class="logo" />
 
-<header class="header">
-  <h1 class="title">Unblocker Hub</h1>
-  <div class="subtitle">Games • Hub • Play</div>
-</header>
+    <div class="nav-btn">Home</div>
+    <div class="nav-btn">Games</div>
+    <div class="nav-btn">Apps</div>
+    <div class="nav-btn">Proxy</div>
+  </div>
 
-<main class="container">
-  <h2>Available Games</h2>
-  <div class="grid" id="grid"></div>
-  <div class="footer">Built with ❤️ — use Control Panel to manage games & logo</div>
-</main>
+  <!-- ====== GAME GRID ====== -->
+  <div class="grid">
 
-<script>
-/* load data */
-const storage = window.localStorage;
-let games = JSON.parse(storage.getItem('games') || 'null');
-if(!games){ games = []; storage.setItem('games', JSON.stringify(games)); }
+    <div class="card"><img src="games/1.png"></div>
+    <div class="card"><img src="games/2.png"></div>
+    <div class="card"><img src="games/3.png"></div>
+    <div class="card"><img src="games/4.png"></div>
+    <div class="card"><img src="games/5.png"></div>
+    <div class="card"><img src="games/6.png"></div>
 
-let topbar = JSON.parse(storage.getItem('topbar') || 'null');
-if(!topbar){ topbar = [{label:'Home',href:'index.html'},{label:'Apps',href:'#apps'}]; storage.setItem('topbar', JSON.stringify(topbar)); }
+  </div>
 
-/* render topbar */
-const topbarEl = document.getElementById('topbar');
-function renderTopbar(){
-  topbarEl.innerHTML = '';
-  topbar.forEach((t,i)=>{
-    const a = document.createElement('a');
-    a.className = 'topbar-link' + (i===0 ? ' active' : '');
-    a.href = t.href || '#';
-    a.innerText = t.label;
-    a.addEventListener('click', (ev)=>{
-      // active highlight
-      document.querySelectorAll('.topbar-link').forEach(n=>n.classList.remove('active'));
-      a.classList.add('active');
+  <!-- ====== CURSOR GLOW JS ====== -->
+  <script>
+    document.querySelectorAll(".card").forEach(card => {
+      card.addEventListener("mousemove", e => {
+        const rect = card.getBoundingClientRect();
+        card.style.setProperty("--x", e.clientX - rect.left + "px");
+        card.style.setProperty("--y", e.clientY - rect.top + "px");
+      });
     });
-    topbarEl.appendChild(a);
-  });
-}
-renderTopbar();
+  </script>
 
-/* logo placement (left of topbar content) */
-function positionLogo(){
-  const logo = document.getElementById('siteLogo');
-  const tb = document.querySelector('.topbar-wrap .topbar');
-  if(!tb) return;
-  const rect = tb.getBoundingClientRect();
-  const left = rect.left + window.scrollX;
-  const top = rect.top + window.scrollY;
-  // place logo to the left of nav content with small gap
-  logo.style.left = (left - (logo.offsetWidth + 12)) + 'px';
-  logo.style.top = (top + (rect.height/2) - (logo.offsetHeight/2)) + 'px';
-}
-/* attempt to set logo src from storage */
-const storedLogo = storage.getItem('siteLogo');
-if(storedLogo) document.getElementById('siteLogo').src = storedLogo;
-window.addEventListener('load', positionLogo);
-window.addEventListener('resize', positionLogo);
-
-/* render grid of cards */
-const grid = document.getElementById('grid');
-
-function createCard(g, idx){
-  const card = document.createElement('div'); card.className = 'card';
-  const inner = document.createElement('div'); inner.className = 'card-inner';
-  inner.innerHTML = `
-    <div class="thumb"><img src="${g.logo || 'https://via.placeholder.com/640x360?text=No+Logo'}" alt=""></div>
-    <h3>${g.name || 'Untitled'}</h3>
-    <p>${g.description || ''}</p>
-    <div class="controls">
-      <button class="btn play" data-idx="${idx}">Play</button>
-      <button class="btn fs" data-idx="${idx}">Fullscreen</button>
-    </div>
-  `;
-  card.appendChild(inner);
-
-  /* tilt toward cursor */
-  card.addEventListener('mousemove', (e)=>{
-    const rect = card.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
-    const cx = rect.width / 2, cy = rect.height / 2;
-    const rx = ((y - cy)/cy) * 8; // tilt amount
-    const ry = ((x - cx)/cx) * 10;
-    inner.style.transform = `rotateX(${ -rx }deg) rotateY(${ ry }deg) translateZ(6px)`;
-    card.style.transform = `translateY(-10px)`;
-  });
-  card.addEventListener('mouseleave', ()=>{
-    inner.style.transform = 'rotateX(0deg) rotateY(0deg) translateZ(0px)';
-    card.style.transform = '';
-  });
-
-  /* button handlers */
-  inner.querySelector('.btn.play').addEventListener('click', ()=>{
-    openInModal(g.file || g.url, g.name || 'Game');
-  });
-  inner.querySelector('.btn.fs').addEventListener('click', ()=>{
-    window.open(g.file || g.url, '_blank');
-  });
-
-  return card;
-}
-
-function renderGrid(){
-  grid.innerHTML = '';
-  games.forEach((g,i) => grid.appendChild(createCard(g,i)));
-}
-renderGrid();
-
-/* modal for in-page play */
-let modal;
-function openInModal(url, title){
-  if(!url) return alert('No game file set for this game.');
-  if(modal) modal.remove();
-  modal = document.createElement('div');
-  modal.style.position='fixed'; modal.style.inset=0; modal.style.display='flex'; modal.style.alignItems='center'; modal.style.justifyContent='center';
-  modal.style.background='linear-gradient(rgba(0,0,0,0.55),rgba(0,0,0,0.65))'; modal.style.zIndex=9999;
-  modal.innerHTML = `
-    <div style="width:92%;max-width:1100px;height:80%;background:var(--glass-bg);border-radius:12px;border:1px solid var(--glass-border);overflow:hidden;display:flex;flex-direction:column;">
-      <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 14px;background:rgba(255,255,255,0.02)">
-        <strong style="color:#ffd965">${title}</strong>
-        <div>
-          <button id="closeModal" style="margin-right:8px;padding:6px 10px;border-radius:8px;border:none;background:rgba(255,255,255,0.03);color:#fff;cursor:pointer">CLOSE</button>
-        </div>
-      </div>
-      <iframe src="${url}" style="flex:1;border:0;background:#000"></iframe>
-    </div>
-  `;
-  document.body.appendChild(modal);
-  modal.querySelector('#closeModal').addEventListener('click', ()=> modal.remove());
-}
-
-/* helper to allow controlpanel to request reload */
-window.addEventListener('storage', (e)=>{
-  if(e.key && e.key.startsWith('uh_reload_')) {
-    games = JSON.parse(storage.getItem('games') || '[]');
-    topbar = JSON.parse(storage.getItem('topbar') || JSON.stringify(topbar));
-    renderTopbar(); positionLogo(); renderGrid();
-  }
-});
-</script>
 </body>
 </html>
