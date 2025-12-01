@@ -1,219 +1,192 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Unblocker Hub</title>
-
 <style>
-    body {
-        margin: 0;
-        padding: 0;
-        font-family: "SF Pro Display", "Inter", sans-serif;
-        background: url("bg.png") no-repeat center center fixed;
-        background-size: cover;
-        overflow-x: hidden;
-    }
+  body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Roboto, sans-serif;
+    background: url("./bg.png") no-repeat center/cover;
+    color: white;
+    overflow-x: hidden;
+  }
 
-    /* Floating Liquid-Glass Logo */
-    .logo {
-        position: fixed;
-        top: 80px;
-        left: 50%;
-        transform: translateX(-50%);
-        width: 150px;
-        height: 150px;
-        border-radius: 50%;
-        backdrop-filter: blur(25px);
-        background: rgba(255, 255, 255, 0.12);
-        border: 2px solid rgba(255, 255, 255, 0.15);
-        box-shadow:
-            0 0 25px rgba(255, 255, 255, 0.4),
-            inset 0 0 15px rgba(255, 255, 255, 0.25);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        z-index: 30;
-        animation: float 6s ease-in-out infinite;
-    }
+  /* Overlay */
+  body::after {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.25);
+    pointer-events: none;
+  }
 
-    .logo img {
-        width: 90%;
-        height: 90%;
-        border-radius: 50%;
-    }
+  /* TOPBAR */
+  nav {
+    position: fixed;
+    top: 45px;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 12px 40px;
+    background: rgba(255,255,255,0.08);
+    border-radius: 40px;
+    display: flex;
+    gap: 35px;
+    z-index: 10;
+    backdrop-filter: blur(12px) brightness(1.4);
+    border: 1px solid rgba(255,255,255,0.2);
+    box-shadow: 0 10px 40px rgba(0,0,0,0.45),
+                0 0 25px rgba(255,255,255,0.25);
+  }
 
-    @keyframes float {
-        0% { transform: translate(-50%, 0px); }
-        50% { transform: translate(-50%, -10px); }
-        100% { transform: translate(-50%, 0px); }
-    }
+  nav a {
+    text-decoration: none;
+    color: white;
+    font-size: 18px;
+    font-weight: 600;
+    transition: 0.25s;
+  }
 
-    /* Topbar */
-    .topbar {
-        position: fixed;
-        top: 40px;
-        left: 50%;
-        transform: translateX(-50%);
-        padding: 15px 40px;
-        display: flex;
-        gap: 40px;
-        border-radius: 50px;
-        backdrop-filter: blur(25px);
-        background: rgba(255, 255, 255, 0.10);
-        border: 2px solid rgba(255, 255, 255, 0.15);
-        box-shadow:
-            0 0 25px rgba(255, 255, 255, 0.4),
-            inset 0 0 15px rgba(255, 255, 255, 0.25);
-        z-index: 20;
-        animation: float2 7s ease-in-out infinite;
-    }
+  nav a.active {
+    color: #ffeb5a;
+    text-shadow: 0 0 10px #ffea7a;
+  }
 
-    .topbar a {
-        color: white;
-        text-decoration: none;
-        font-size: 18px;
-        letter-spacing: 0.5px;
-        transition: 0.3s ease;
-    }
+  nav a:hover {
+    color: #ffe066;
+  }
 
-    .topbar a:hover {
-        transform: translateY(-3px);
-        text-shadow: 0 0 12px white;
-    }
+  /* LOGO — FLOATING NEXT TO TOPBAR */
+  .logo {
+    position: fixed;
+    top: 32px;
+    left: calc(50% - 190px);
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.1);
+    backdrop-filter: blur(12px) brightness(1.2);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5),
+                0 0 20px rgba(255,255,255,0.25);
+    z-index: 11;
+  }
 
-    @keyframes float2 {
-        0% { transform: translateX(-50%) translateY(0px); }
-        50% { transform: translateX(-50%) translateY(-8px); }
-        100% { transform: translateX(-50%) translateY(0px); }
-    }
+  header {
+    margin-top: 160px;
+    text-align: center;
+    font-size: 48px;
+    font-weight: 700;
+    text-shadow: 0 0 25px rgba(255,255,255,0.3);
+  }
 
-    /* Game grid */
-    .games {
-        margin-top: 300px;
-        padding: 40px;
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-        gap: 40px;
-    }
+  .container {
+    padding: 60px;
+    padding-top: 40px;
+    position: relative;
+    z-index: 2;
+  }
 
-    /* Game Card */
-    .game-card {
-        position: relative;
-        height: 260px;
-        border-radius: 28px;
-        backdrop-filter: blur(22px);
-        background: rgba(255, 255, 255, 0.18);
-        border: 2px solid rgba(255, 255, 255, 0.15);
+  h2 {
+    font-size: 32px;
+    margin-bottom: 25px;
+    color: #ffeb65;
+  }
 
-        box-shadow:
-            0 0 25px rgba(255, 255, 255, 0.25),
-            inset 0 0 12px rgba(255, 255, 255, 0.20);
+  /* GAME GRID */
+  .game-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 35px;
+  }
 
-        transition: transform 0.3s ease, box-shadow 0.3s ease;
-        cursor: pointer;
-        overflow: hidden;
-    }
+  /* GAME CARD */
+  .game-card {
+    background: rgba(255,255,255,0.07);
+    padding: 25px;
+    border-radius: 25px;
+    backdrop-filter: blur(14px) saturate(180%) brightness(1.3);
+    border: 1px solid rgba(255,255,255,0.18);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.4),
+                inset 0 0 20px rgba(255,255,255,0.15);
+    transition: 0.4s;
+    cursor: pointer;
+    transform-style: preserve-3d;
+  }
 
-    .game-card:hover {
-        transform: translateY(-12px) scale(1.05) rotateX(6deg) rotateY(-6deg);
-        box-shadow:
-            0 0 35px rgba(255, 255, 255, 0.45),
-            inset 0 0 20px rgba(255, 255, 255, 0.35);
-    }
+  .game-card:hover {
+    transform: translateY(-12px);
+  }
 
-    /* Cursor-follow glow */
-    .game-card::after {
-        content: "";
-        position: absolute;
-        top: var(--y);
-        left: var(--x);
-        width: 140px;
-        height: 140px;
-        transform: translate(-50%, -50%);
-        background: radial-gradient(circle, rgba(255,255,255,0.45), transparent 60%);
-        opacity: 0;
-        border-radius: 50%;
-        transition: 0.15s ease;
-        pointer-events: none;
-    }
+  .game-card img {
+    width: 100%;
+    border-radius: 20px;
+    margin-bottom: 12px;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.45),
+                0 0 15px rgba(255,255,255,0.2);
+    transition: 0.3s;
+  }
 
-    .game-card:hover::after {
-        opacity: 1;
-    }
+  .game-card img:hover {
+    transform: scale(1.07);
+  }
 
-    /* Game image */
-    .game-card img {
-        width: 100%;
-        height: 70%;
-        object-fit: cover;
-        border-radius: 20px;
-    }
+  .game-card b {
+    display: block;
+    font-size: 22px;
+    margin-bottom: 5px;
+    text-shadow: 0 0 10px rgba(255,255,255,0.3);
+  }
 
-    /* Game title */
-    .game-title {
-        position: absolute;
-        bottom: 15px;
-        width: 100%;
-        text-align: center;
-        color: white;
-        font-size: 22px;
-        font-weight: 600;
-        text-shadow: 0 0 10px rgba(255,255,255,0.8);
-        transition: 0.3s ease;
-    }
-
-    .game-card:hover .game-title {
-        transform: translateY(-4px);
-        text-shadow: 0 0 15px white;
-    }
-
+  .game-card p {
+    font-size: 14px;
+    opacity: 0.8;
+  }
 </style>
 </head>
 
 <body>
 
-<!-- Floating Logo -->
-<div class="logo">
-    <img src="logo.png">
-</div>
+<img src="https://via.placeholder.com/60" class="logo">
 
-<!-- Top Bar -->
-<div class="topbar">
-    <a href="index.html">Home</a>
-    <a href="launcher.html">Launcher</a>
-    <a href="controlpanel.html">Control Panel</a>
-</div>
+<nav>
+  <a class="active" href="index.html">Home</a>
+  <a href="apps.html">Apps</a>
+</nav>
 
-<!-- Game Grid -->
-<div class="games" id="games"></div>
+<header>🎮 Unblocker Hub</header>
+
+<div class="container">
+  <h2>Available Games</h2>
+  <div id="gameList" class="game-list"></div>
+</div>
 
 <script>
-/* Load games from localStorage */
-const games = JSON.parse(localStorage.getItem("games")) || [];
+const games = JSON.parse(localStorage.getItem("games") || "[]");
 
-const container = document.getElementById("games");
+function tilt(card, e) {
+  const r = card.getBoundingClientRect();
+  const x = e.clientX - r.left;
+  const y = e.clientY - r.top;
+  const rx = ((y - r.height/2) / r.height) * -15;
+  const ry = ((x - r.width/2) / r.width) * 15;
+  card.style.transform = `translateY(-10px) rotateX(${rx}deg) rotateY(${ry}deg)`;
+}
+
+function reset(card) {
+  card.style.transform = `translateY(0px) rotateX(0deg) rotateY(0deg)`;
+}
+
+const list = document.getElementById("gameList");
 
 games.forEach((g, i) => {
-    const card = document.createElement("div");
-    card.className = "game-card";
-
-    card.innerHTML = `
-        <img src="${g.logo}">
-        <div class="game-title">${g.name}</div>
-    `;
-
-    card.onclick = () => {
-        window.location.href = "launcher.html?game=" + i;
-    };
-
-    card.addEventListener("mousemove", (e) => {
-        let rect = card.getBoundingClientRect();
-        card.style.setProperty("--x", e.clientX - rect.left + "px");
-        card.style.setProperty("--y", e.clientY - rect.top + "px");
-    });
-
-    container.appendChild(card);
+  const c = document.createElement("div");
+  c.className = "game-card";
+  c.innerHTML = `<img src="${g.logo}"><b>${g.name}</b><p>${g.description || ""}</p>`;
+  c.onclick = () => location.href = "launcher.html?game=" + i;
+  c.onmousemove = (e) => tilt(c, e);
+  c.onmouseleave = () => reset(c);
+  list.appendChild(c);
 });
 </script>
 
