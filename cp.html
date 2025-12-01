@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Control Panel</title>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+<style>
+body { font-family: 'Roboto', sans-serif; background: #0d0d0d; color: #fff; padding: 20px; }
+h1, h3 { color: #ffcc00; }
+input, button { padding: 12px; margin: 8px 0; width: 100%; border-radius: 8px; border: none; font-size: 16px; }
+input { background: #222; color: #fff; }
+button { background: linear-gradient(90deg, #6a11cb, #2575fc); color: #fff; font-weight: bold; cursor: pointer; }
+button:hover { opacity: 0.85; }
+.game-item { background: #1e1e2f; padding: 12px; border-radius: 10px; margin-top: 10px; display: flex; justify-content: space-between; align-items: center; }
+</style>
+</head>
+<body>
+<h1>Control Panel</h1>
+<h3>Add New Game</h3>
+
+
+<input id="gameName" placeholder="Game Name" />
+<input id="gameLogo" placeholder="Logo URL" />
+<input id="gameFile" placeholder="Game HTML File Path" />
+<input id="gamePos" type="number" placeholder="Position (0 = first)" />
+<button onclick="addGame()">Add Game</button>
+
+
+<h3>Existing Games</h3>
+<div id="gameList"></div>
+
+
+<script>
+let games = JSON.parse(localStorage.getItem('games') || '[]');
+const list = document.getElementById('gameList');
+
+
+function render() {
+list.innerHTML = '';
+games.forEach((g, i) => {
+const item = document.createElement('div');
+item.className = 'game-item';
+item.innerHTML = `<span>${i + 1}. ${g.name}</span>`;
+list.appendChild(item);
+});
+}
+
+
+function addGame() {
+const name = document.getElementById('gameName').value;
+const logo = document.getElementById('gameLogo').value;
+const file = document.getElementById('gameFile').value;
+const pos = parseInt(document.getElementById('gamePos').value);
+
+
+const newGame = { name, logo, file };
+if (pos >= 0 && pos <= games.length) games.splice(pos, 0, newGame);
+else games.push(newGame);
+
+
+localStorage.setItem('games', JSON.stringify(games));
+render();
+}
+
+
+render();
+</script>
+</body>
+</html>
