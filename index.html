@@ -3,88 +3,219 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Game Hub - Home</title>
-<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+<title>Unblocker Hub</title>
+
 <style>
-body { font-family: 'Roboto', sans-serif; background: #121212; color: #fff; margin: 0; }
-header { padding: 30px; background: linear-gradient(90deg, #6a11cb, #2575fc); text-align: center; font-size: 36px; font-weight: bold; letter-spacing: 1px; }
-.container { padding: 40px; }
-h2 { margin-bottom: 20px; color: #fff0f5; }
-.game-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 25px; }
-.game-card { background: #1e1e2f; padding: 20px; border-radius: 20px; cursor: pointer; transition: transform 0.3s, box-shadow 0.3s; box-shadow: 0 4px 15px rgba(0,0,0,0.3); }
-.game-card:hover { transform: translateY(-5px); box-shadow: 0 8px 25px rgba(0,0,0,0.5); }
-.game-card img { width: 100%; border-radius: 15px; margin-bottom: 10px; }
-.game-card b { font-size: 18px; color: #ffd700; }
-</style>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Unblocker Hub</title>
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
-  <style>
-    body { font-family: 'Roboto', sans-serif; background: #0b0b0d; color: #fff; margin: 0; }
-    header { padding: 50px; text-align: center; font-size: 42px; font-weight: bold; letter-spacing: 1px;
-             background: rgba(255,255,255,0.05); backdrop-filter: blur(15px) brightness(1.2);
-             color: #e0e0ff; box-shadow: 0 0 50px rgba(255,255,255,0.1); border-bottom: 1px solid rgba(255,255,255,0.1); }
-    .container { padding: 60px; }
-    h2 { margin-bottom: 40px; color: #ffcc00; font-size: 32px; }
-    .game-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 35px; }
-    .game-card { background: rgba(255,255,255,0.05); padding: 25px; border-radius: 25px;
-                 cursor: pointer; transition: transform 0.5s, box-shadow 0.5s, backdrop-filter 0.5s;
-                 backdrop-filter: blur(10px) saturate(180%) brightness(1.2); }
-    .game-card:hover { transform: translateY(-15px) rotateY(10deg) rotateX(5deg); box-shadow: 0 20px 40px rgba(0,0,0,0.6); }
-    .game-card img { width: 100%; border-radius: 20px; margin-bottom: 15px; box-shadow: 0 8px 25px rgba(0,0,0,0.4); transition: transform 0.5s; }
-    .game-card img:hover { transform: scale(1.05); }
-    .game-card b { font-size: 20px; color: #ffd700; display: block; transition: transform 0.3s; }
-    .game-card b:hover { transform: translateY(-5px) rotateX(5deg) rotateY(5deg); color: #fffa90; }
-    .game-card p { font-size: 14px; color: #ccc; line-height: 1.4; margin-top: 5px; }
-    body::before {
-      content: '';
-      position: fixed; top:0; left:0; width:100%; height:100%;
-      background: radial-gradient(circle at 20% 20%, rgba(255, 255, 255, 0.06), transparent 30%),
-                  radial-gradient(circle at 80% 80%, rgba(255, 255, 255, 0.06), transparent 30%);
-      pointer-events: none;
+    body {
+        margin: 0;
+        padding: 0;
+        font-family: "SF Pro Display", "Inter", sans-serif;
+        background: url("bg.png") no-repeat center center fixed;
+        background-size: cover;
+        overflow-x: hidden;
     }
-  </style>
+
+    /* Floating Liquid-Glass Logo */
+    .logo {
+        position: fixed;
+        top: 80px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 150px;
+        height: 150px;
+        border-radius: 50%;
+        backdrop-filter: blur(25px);
+        background: rgba(255, 255, 255, 0.12);
+        border: 2px solid rgba(255, 255, 255, 0.15);
+        box-shadow:
+            0 0 25px rgba(255, 255, 255, 0.4),
+            inset 0 0 15px rgba(255, 255, 255, 0.25);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 30;
+        animation: float 6s ease-in-out infinite;
+    }
+
+    .logo img {
+        width: 90%;
+        height: 90%;
+        border-radius: 50%;
+    }
+
+    @keyframes float {
+        0% { transform: translate(-50%, 0px); }
+        50% { transform: translate(-50%, -10px); }
+        100% { transform: translate(-50%, 0px); }
+    }
+
+    /* Topbar */
+    .topbar {
+        position: fixed;
+        top: 40px;
+        left: 50%;
+        transform: translateX(-50%);
+        padding: 15px 40px;
+        display: flex;
+        gap: 40px;
+        border-radius: 50px;
+        backdrop-filter: blur(25px);
+        background: rgba(255, 255, 255, 0.10);
+        border: 2px solid rgba(255, 255, 255, 0.15);
+        box-shadow:
+            0 0 25px rgba(255, 255, 255, 0.4),
+            inset 0 0 15px rgba(255, 255, 255, 0.25);
+        z-index: 20;
+        animation: float2 7s ease-in-out infinite;
+    }
+
+    .topbar a {
+        color: white;
+        text-decoration: none;
+        font-size: 18px;
+        letter-spacing: 0.5px;
+        transition: 0.3s ease;
+    }
+
+    .topbar a:hover {
+        transform: translateY(-3px);
+        text-shadow: 0 0 12px white;
+    }
+
+    @keyframes float2 {
+        0% { transform: translateX(-50%) translateY(0px); }
+        50% { transform: translateX(-50%) translateY(-8px); }
+        100% { transform: translateX(-50%) translateY(0px); }
+    }
+
+    /* Game grid */
+    .games {
+        margin-top: 300px;
+        padding: 40px;
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+        gap: 40px;
+    }
+
+    /* Game Card */
+    .game-card {
+        position: relative;
+        height: 260px;
+        border-radius: 28px;
+        backdrop-filter: blur(22px);
+        background: rgba(255, 255, 255, 0.18);
+        border: 2px solid rgba(255, 255, 255, 0.15);
+
+        box-shadow:
+            0 0 25px rgba(255, 255, 255, 0.25),
+            inset 0 0 12px rgba(255, 255, 255, 0.20);
+
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        cursor: pointer;
+        overflow: hidden;
+    }
+
+    .game-card:hover {
+        transform: translateY(-12px) scale(1.05) rotateX(6deg) rotateY(-6deg);
+        box-shadow:
+            0 0 35px rgba(255, 255, 255, 0.45),
+            inset 0 0 20px rgba(255, 255, 255, 0.35);
+    }
+
+    /* Cursor-follow glow */
+    .game-card::after {
+        content: "";
+        position: absolute;
+        top: var(--y);
+        left: var(--x);
+        width: 140px;
+        height: 140px;
+        transform: translate(-50%, -50%);
+        background: radial-gradient(circle, rgba(255,255,255,0.45), transparent 60%);
+        opacity: 0;
+        border-radius: 50%;
+        transition: 0.15s ease;
+        pointer-events: none;
+    }
+
+    .game-card:hover::after {
+        opacity: 1;
+    }
+
+    /* Game image */
+    .game-card img {
+        width: 100%;
+        height: 70%;
+        object-fit: cover;
+        border-radius: 20px;
+    }
+
+    /* Game title */
+    .game-title {
+        position: absolute;
+        bottom: 15px;
+        width: 100%;
+        text-align: center;
+        color: white;
+        font-size: 22px;
+        font-weight: 600;
+        text-shadow: 0 0 10px rgba(255,255,255,0.8);
+        transition: 0.3s ease;
+    }
+
+    .game-card:hover .game-title {
+        transform: translateY(-4px);
+        text-shadow: 0 0 15px white;
+    }
+
+</style>
 </head>
+
 <body>
 
-
-<header>🎮 Ultimate Game Hub</header>
-
-<header>🎮 Unblocker Hub</header>
-
-<div class="container">
-<h2>Available Games</h2>
-<div id="gameList" class="game-list"></div>
-  <h2>Available Games</h2>
-  <div id="gameList" class="game-list"></div>
+<!-- Floating Logo -->
+<div class="logo">
+    <img src="logo.png">
 </div>
 
+<!-- Top Bar -->
+<div class="topbar">
+    <a href="index.html">Home</a>
+    <a href="launcher.html">Launcher</a>
+    <a href="controlpanel.html">Control Panel</a>
+</div>
+
+<!-- Game Grid -->
+<div class="games" id="games"></div>
 
 <script>
-const games = JSON.parse(localStorage.getItem('games') || '[]');
-const list = document.getElementById('gameList');
+/* Load games from localStorage */
+const games = JSON.parse(localStorage.getItem("games")) || [];
 
+const container = document.getElementById("games");
 
 games.forEach((g, i) => {
-const card = document.createElement('div');
-card.className = 'game-card';
-card.innerHTML = `<strong>${g.name}</strong><br><img src="${g.logo}" alt='${g.name}'>`;
-card.onclick = () => window.location.href = `launcher.html?game=${i}`;
-list.appendChild(card);
+    const card = document.createElement("div");
+    card.className = "game-card";
+
+    card.innerHTML = `
+        <img src="${g.logo}">
+        <div class="game-title">${g.name}</div>
+    `;
+
+    card.onclick = () => {
+        window.location.href = "launcher.html?game=" + i;
+    };
+
+    card.addEventListener("mousemove", (e) => {
+        let rect = card.getBoundingClientRect();
+        card.style.setProperty("--x", e.clientX - rect.left + "px");
+        card.style.setProperty("--y", e.clientY - rect.top + "px");
+    });
+
+    container.appendChild(card);
 });
-  const games = JSON.parse(localStorage.getItem('games') || '[]');
-  const list = document.getElementById('gameList');
-
-  games.forEach((g, i) => {
-    const card = document.createElement('div');
-    card.className = 'game-card';
-    card.innerHTML = `<img src="${g.logo}" alt='${g.name}'><b>${g.name}</b><p>${g.description || ''}</p>`;
-    card.onclick = () => window.location.href = `launcher.html?game=${i}`;
-    list.appendChild(card);
-  });
 </script>
-
 
 </body>
 </html>
