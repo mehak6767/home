@@ -44,33 +44,6 @@ h2{font-size:32px;margin-bottom:25px;color:var(--accent)}
 </div>
 
 <script>
-/* ---------- CONFIG (your bin id & key) ---------- */
-/* You provided these; keep them secret. */
-const JSONBIN_BIN_ID = "692e2648ae596e708f7d428b";
-const JSONBIN_API_KEY = "$2a$10$Z5j31D0.n/.IVQktOxo8AuNN1LPeRG9hMCN.XfGCeA0ZLSuPYwjny";
-
-/* ---------- helper to read bin ---------- */
-async function fetchGamesFromJsonBin(){
-  try {
-    const res = await fetch(`https://api.jsonbin.io/v3/b/${JSONBIN_BIN_ID}/latest`, {
-      headers: {
-        'X-Master-Key': JSONBIN_API_KEY
-      }
-    });
-    if(!res.ok) throw new Error('JSONBin read failed: ' + res.status);
-    const payload = await res.json();
-    // JSONBin v3 wraps your object inside payload.record for many endpoints; handle both shapes
-    const data = payload && payload.record ? payload.record : payload;
-    if(Array.isArray(data.games)) return data.games;
-    if(Array.isArray(data)) return data; // older bins might be raw arrays
-    return [];
-  } catch(err){
-    console.warn('Could not fetch from JSONBin, falling back to localStorage. Error:', err);
-    return null; // signal fallback
-  }
-}
-
-/* ---------- render ---------- */
 const list = document.getElementById('gameList');
 
 function renderGames(games){
@@ -82,7 +55,7 @@ function renderGames(games){
                    <b>${g.name || 'Untitled'}</b>
                    <p>${g.description || ''}</p>`;
     c.onclick = () => location.href = 'launcher.html?game=' + i;
-    // tilt effect (kept)
+    // tilt effect
     c.onmousemove = (e)=>{
       const r = c.getBoundingClientRect();
       const x = e.clientX - r.left;
@@ -96,19 +69,21 @@ function renderGames(games){
   });
 }
 
-/* ---------- startup: try JSONBin, else local ---------- */
-(async function init(){
-  const remote = await fetchGamesFromJsonBin();
-  if(remote === null){
-    // fallback to localStorage
+/* ---------- fetch games.json ---------- */
+async function loadGames(){
+  try{
+    const res = await fetch('games.json');
+    if(!res.ok) throw new Error('games.json fetch failed: ' + res.status);
+    const games = await res.json();
+    renderGames(games);
+  } catch(err){
+    console.error('Could not load games.json, falling back to localStorage', err);
     const games = JSON.parse(localStorage.getItem('games') || '[]');
     renderGames(games);
-  } else {
-    // remote array
-    localStorage.setItem('games', JSON.stringify(remote)); // keep a local copy
-    renderGames(remote);
   }
-})();
+}
+
+loadGames();
 </script>
 </body>
 </html>
