@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Launcher</title>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+<style>
+body { margin: 0; background: #000; font-family: 'Roboto', sans-serif; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; }
+#frame { width: 80vw; height: 70vh; border: 4px solid #fff; border-radius: 12px; margin-bottom: 20px; }
+.btn { padding: 12px 25px; border-radius: 10px; font-size: 18px; font-weight: bold; cursor: pointer; margin: 5px; border: none; transition: 0.3s; }
+.btn-play { background: #28a745; color: #fff; }
+.btn-play:hover { background: #1e7e34; }
+.btn-fullscreen { background: #ff69b4; color: #fff; }
+.btn-fullscreen:hover { background: #ff1493; }
+</style>
+</head>
+<body>
+
+
+<iframe id="frame"></iframe>
+<div>
+<button class="btn btn-play" id="playBtn">CLICK TO PLAY</button>
+<button class="btn btn-fullscreen" id="fullscreenBtn">FULLSCREEN</button>
+</div>
+
+
+<script>
+const params = new URLSearchParams(window.location.search);
+const gameIndex = params.get('game');
+const games = JSON.parse(localStorage.getItem('games') || '[]');
+const game = games[gameIndex];
+if (!game) alert('Game not found');
+
+
+const frame = document.getElementById('frame');
+const playBtn = document.getElementById('playBtn');
+const fsBtn = document.getElementById('fullscreenBtn');
+
+
+playBtn.onclick = () => { frame.src = game.file; };
+fsBtn.onclick = () => { window.open(game.file, '_blank'); };
+</script>
+</body>
+</html>
