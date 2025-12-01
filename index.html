@@ -1,4 +1,4 @@
-<!-- index.html (Home Page) -->
+<!-- index.html (Home Page with Liquid Glass Background) -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,28 +7,86 @@
   <title>Unblocker Hub</title>
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
   <style>
-    body { font-family: 'Roboto', sans-serif; background: #0b0b0d; color: #fff; margin: 0; }
-    header { padding: 50px; text-align: center; font-size: 42px; font-weight: bold; letter-spacing: 1px;
-             background: rgba(255,255,255,0.05); backdrop-filter: blur(15px) brightness(1.2);
-             color: #e0e0ff; box-shadow: 0 0 50px rgba(255,255,255,0.1); border-bottom: 1px solid rgba(255,255,255,0.1); }
-    .container { padding: 60px; }
-    h2 { margin-bottom: 40px; color: #ffcc00; font-size: 32px; }
-    .game-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 35px; }
-    .game-card { background: rgba(255,255,255,0.05); padding: 25px; border-radius: 25px;
-                 cursor: pointer; transition: transform 0.5s, box-shadow 0.5s, backdrop-filter 0.5s;
-                 backdrop-filter: blur(10px) saturate(180%) brightness(1.2); }
-    .game-card:hover { transform: translateY(-15px) rotateY(10deg) rotateX(5deg); box-shadow: 0 20px 40px rgba(0,0,0,0.6); }
-    .game-card img { width: 100%; border-radius: 20px; margin-bottom: 15px; box-shadow: 0 8px 25px rgba(0,0,0,0.4); transition: transform 0.5s; }
-    .game-card img:hover { transform: scale(1.05); }
-    .game-card b { font-size: 20px; color: #ffd700; display: block; transition: transform 0.3s; }
-    .game-card b:hover { transform: translateY(-5px) rotateX(5deg) rotateY(5deg); color: #fffa90; }
-    .game-card p { font-size: 14px; color: #ccc; line-height: 1.4; margin-top: 5px; }
-    body::before {
+    body {
+      font-family: 'Roboto', sans-serif;
+      background: url('https://png.pngtree.com/thumb_back/fh260/background/20230721/pngtree-3d-rendered-background-of-liquid-colors-on-iridescent-glass-material-image_3721866.jpg') no-repeat center/cover;
+      margin: 0;
+      color: #fff;
+      position: relative;
+    }
+    body::after {
       content: '';
-      position: fixed; top:0; left:0; width:100%; height:100%;
-      background: radial-gradient(circle at 20% 20%, rgba(255, 255, 255, 0.06), transparent 30%),
-                  radial-gradient(circle at 80% 80%, rgba(255, 255, 255, 0.06), transparent 30%);
-      pointer-events: none;
+      position: fixed;
+      top:0; left:0; width:100%; height:100%;
+      background: rgba(0,0,0,0.1); /* 90% opacity of the image */
+      z-index: 0;
+    }
+    header {
+      padding: 50px;
+      text-align: center;
+      font-size: 42px;
+      font-weight: bold;
+      letter-spacing: 1px;
+      background: rgba(255,255,255,0.05);
+      backdrop-filter: blur(15px) brightness(1.2);
+      color: #e0e0ff;
+      box-shadow: 0 0 50px rgba(255,255,255,0.1);
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+      position: relative;
+      z-index: 1;
+    }
+    .container {
+      padding: 60px;
+      position: relative;
+      z-index: 1;
+    }
+    h2 {
+      margin-bottom: 40px;
+      color: #ffcc00;
+      font-size: 32px;
+    }
+    .game-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 35px;
+    }
+    .game-card {
+      background: rgba(255,255,255,0.05);
+      padding: 25px;
+      border-radius: 25px;
+      cursor: pointer;
+      transition: transform 0.5s, box-shadow 0.5s, backdrop-filter 0.5s;
+      backdrop-filter: blur(15px) saturate(180%) brightness(1.2);
+    }
+    .game-card:hover {
+      transform: translateY(-15px) rotateY(10deg) rotateX(5deg);
+      box-shadow: 0 20px 40px rgba(0,0,0,0.6);
+    }
+    .game-card img {
+      width: 100%;
+      border-radius: 20px;
+      margin-bottom: 15px;
+      box-shadow: 0 8px 25px rgba(0,0,0,0.4);
+      transition: transform 0.5s;
+    }
+    .game-card img:hover {
+      transform: scale(1.05);
+    }
+    .game-card b {
+      font-size: 20px;
+      color: #ffd700;
+      display: block;
+      transition: transform 0.3s;
+    }
+    .game-card b:hover {
+      transform: translateY(-5px) rotateX(5deg) rotateY(5deg);
+      color: #fffa90;
+    }
+    .game-card p {
+      font-size: 14px;
+      color: #ccc;
+      line-height: 1.4;
+      margin-top: 5px;
     }
   </style>
 </head>
@@ -53,5 +111,6 @@
     list.appendChild(card);
   });
 </script>
+
 </body>
 </html>
