@@ -1,0 +1,20 @@
+[
+  {
+    "name": "Snake",
+    "logo": "logos/snake.png",
+    "file": "games/snake.html",
+    "description": "Classic snake game."
+  },
+  {
+    "name": "Tetris",
+    "logo": "logos/tetris.png",
+    "file": "games/tetris.html",
+    "description": "Tetris clone with modern graphics."
+  },
+  {
+    "name": "2048",
+    "logo": "logos/2048.png",
+    "file": "games/2048.html",
+    "description": "Slide and merge tiles to reach 2048!"
+  }
+]
