@@ -91,37 +91,67 @@ textarea.input{min-height:80px;padding:12px}
 </div>
 
 <script>
-const storage = window.localStorage;
+/* ===========================
+   JSONBIN SHARED DATABASE
+   =========================== */
+const BIN_ID = "692e2648ae596e708f7d428b";
+const API_KEY = "$2a$10$Z5j31D0.n/.IVQktOxo8AuNN1LPeRG9hMCN.XfGCeA0ZLSuPYwjny";
 
-/* games/topbar init */
-let games = JSON.parse(storage.getItem('games')||'null');
-if(!games){ games = []; storage.setItem('games', JSON.stringify(games)); }
-let topbar = JSON.parse(storage.getItem('topbar')||'null');
-if(!topbar){ topbar = [{label:'Home',href:'index.html'},{label:'Apps',href:'#apps'}]; storage.setItem('topbar', JSON.stringify(topbar)); }
+const BIN_URL = `https://api.jsonbin.io/v3/b/${BIN_ID}`;
 
-/* set logo from storage if present */
-const logoImg = document.getElementById('siteLogo');
-const storedLogo = storage.getItem('siteLogo');
-if(storedLogo) logoImg.src = storedLogo;
+/* Fetch games from JSONBIN */
+async function loadGames() {
+  const res = await fetch(BIN_URL, {
+    headers: { "X-Master-Key": API_KEY }
+  });
+  const data = await res.json();
+  return data.record.games || [];
+}
 
-/* render topbar */
-function renderTopbar(){ const tb=document.getElementById('topbar'); tb.innerHTML=''; topbar.forEach((t,i)=>{ const a=document.createElement('a'); a.href=t.href||'#'; a.className='topbar-link'; a.innerText=t.label; tb.appendChild(a); }); }
-renderTopbar();
+/* Save games array to JSONBIN */
+async function saveGames(games) {
+  await fetch(BIN_URL, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+      "X-Master-Key": API_KEY
+    },
+    body: JSON.stringify({ games })
+  });
+}
 
-/* render games list with index + delete + move */
-const gamesList = document.getElementById('gamesList');
-function renderGames(){
-  gamesList.innerHTML = '';
-  games.forEach((g,i)=>{
-    const div = document.createElement('div'); div.className='gitem';
+/* ====== Init ====== */
+let games = [];
+let loading = false;
+
+async function init() {
+  loading = true;
+  games = await loadGames();
+  renderGames();
+  loading = false;
+}
+init();
+
+/* ===========================
+   RENDER LIST
+   =========================== */
+const gamesList = document.getElementById("gamesList");
+
+function renderGames() {
+  gamesList.innerHTML = "";
+  games.forEach((g, i) => {
+    const div = document.createElement("div");
+    div.className = "gitem";
+
     div.innerHTML = `
       <div class="meta">
-        <img src="${g.logo || 'https://via.placeholder.com/150x90?text=No+Logo'}">
+        <img src="${g.logo || "https://via.placeholder.com/150"}">
         <div>
-          <div style="font-weight:700">${i}. ${g.name || 'Untitled'}</div>
-          <div class="small">${g.description || ''}</div>
+          <div style="font-weight:700">${i}. ${g.name}</div>
+          <div class="small">${g.description || ""}</div>
         </div>
       </div>
+
       <div>
         <button class="btn" onclick="editGame(${i})">Edit</button>
         <button class="btn" onclick="moveUp(${i})">▲</button>
@@ -129,94 +159,97 @@ function renderGames(){
         <button class="btn warn" onclick="deleteGame(${i})">Delete</button>
       </div>
     `;
+
     gamesList.appendChild(div);
   });
 }
-renderGames();
 
-/* add game */
-document.getElementById('add').addEventListener('click', ()=>{
-  const name = document.getElementById('name').value.trim();
-  const logo = document.getElementById('logo').value.trim();
-  const file = document.getElementById('file').value.trim();
-  const desc = document.getElementById('desc').value.trim();
-  const posVal = document.getElementById('pos').value.trim();
-  if(!name || !logo || !file) return alert('Please fill name, logo and file fields.');
-  const item = {name,logo,file,description:desc};
+/* ===========================
+   ADD GAME
+   =========================== */
+
+document.getElementById("add").addEventListener("click", async () => {
+  if (loading) return alert("Wait… still loading JSONBin!");
+
+  const name = document.getElementById("name").value.trim();
+  const logo = document.getElementById("logo").value.trim();
+  const file = document.getElementById("file").value.trim();
+  const desc = document.getElementById("desc").value.trim();
+  const posVal = document.getElementById("pos").value.trim();
+
+  if (!name || !logo || !file)
+    return alert("Fill name, logo, and file.");
+
+  const item = { name, logo, file, description: desc };
+
   let pos = parseInt(posVal);
-  if(!isNaN(pos) && pos>=0 && pos<=games.length){ games.splice(pos, 0, item); }
+  if (!isNaN(pos) && pos >= 0 && pos <= games.length) games.splice(pos, 0, item);
   else games.push(item);
-  storage.setItem('games', JSON.stringify(games));
+
+  await saveGames(games);
   renderGames();
-  // clear inputs
-  document.getElementById('name').value=''; document.getElementById('logo').value=''; document.getElementById('file').value=''; document.getElementById('desc').value=''; document.getElementById('pos').value='';
+
+  document.getElementById("name").value = "";
+  document.getElementById("logo").value = "";
+  document.getElementById("file").value = "";
+  document.getElementById("desc").value = "";
+  document.getElementById("pos").value = "";
 });
 
-/* delete, edit, move */
-function deleteGame(i){
-  if(!confirm('Delete this game?')) return;
-  games.splice(i,1);
-  storage.setItem('games', JSON.stringify(games));
+/* ===========================
+   DELETE GAME
+   =========================== */
+async function deleteGame(i) {
+  if (!confirm("Delete this game?")) return;
+  games.splice(i, 1);
+  await saveGames(games);
   renderGames();
 }
-function editGame(i){
+
+/* ===========================
+   EDIT GAME
+   =========================== */
+async function editGame(i) {
   const g = games[i];
-  const name = prompt('Name', g.name); if(name===null) return;
-  const logo = prompt('Logo path/url', g.logo); if(logo===null) return;
-  const file = prompt('File path', g.file); if(file===null) return;
-  const desc = prompt('Description', g.description||''); if(desc===null) return;
-  games[i] = {name,logo,file,description:desc};
-  storage.setItem('games', JSON.stringify(games)); renderGames();
-}
-function moveUp(i){
-  if(i<=0) return;
-  const a = games.splice(i,1)[0]; games.splice(i-1,0,a);
-  storage.setItem('games', JSON.stringify(games)); renderGames();
-}
-function moveDown(i){
-  if(i>=games.length-1) return;
-  const a = games.splice(i,1)[0]; games.splice(i+1,0,a);
-  storage.setItem('games', JSON.stringify(games)); renderGames();
-}
+  const name = prompt("Name", g.name); if (name === null) return;
+  const logo = prompt("Logo URL", g.logo); if (logo === null) return;
+  const file = prompt("File path", g.file); if (file === null) return;
+  const desc = prompt("Description", g.description || ""); if (desc === null) return;
 
-/* update logo (saves path to storage and updates site logo img) */
-document.getElementById('updateLogoBtn').addEventListener('click', ()=>{
-  const v = document.getElementById('siteLogoInput').value.trim();
-  if(!v) return alert('Enter logo path or URL');
-  storage.setItem('siteLogo', v);
-  document.querySelectorAll('.logo').forEach(img => img.src = v);
-  alert('Logo updated. Refresh other pages if open.');
-});
-
-/* signal refresh: other pages listen for storage key starting with uh_reload_ */
-document.getElementById('refresh').addEventListener('click', ()=>{
-  storage.setItem('uh_reload_'+Date.now(), '1');
-  alert('Signalled reload. Refresh index/launcher to see updates (or they will auto-refresh if open).');
-});
-
-/* add demo games for quick testing */
-document.getElementById('importDemo').addEventListener('click', ()=>{
-  const demo = [
-    {name:'Snake',logo:'https://via.placeholder.com/640x360?text=Snake',file:'games/snake.html',description:'Classic snake.'},
-    {name:'Tetris',logo:'https://via.placeholder.com/640x360?text=Tetris',file:'games/tetris.html',description:'Tetris clone.'},
-    {name:'2048',logo:'https://via.placeholder.com/640x360?text=2048',file:'games/2048.html',description:'2048 sliding tiles.'},
-  ];
-  games = games.concat(demo);
-  storage.setItem('games', JSON.stringify(games));
+  games[i] = { name, logo, file, description: desc };
+  await saveGames(games);
   renderGames();
-});
+}
 
-/* respond to external updates */
-window.addEventListener('storage', (e)=>{
-  if(e.key && e.key.startsWith('uh_reload_')){
-    games = JSON.parse(storage.getItem('games')||'[]'); renderGames();
-    topbar = JSON.parse(storage.getItem('topbar')||'[]'); renderTopbar();
-  }
-});
+/* ===========================
+   MOVE UP/DOWN
+   =========================== */
+async function moveUp(i) {
+  if (i <= 0) return;
+  const a = games.splice(i, 1)[0];
+  games.splice(i - 1, 0, a);
+  await saveGames(games);
+  renderGames();
+}
 
-/* renderTopbar helper (used if controlpanel ever modifies topbar) */
-function renderTopbar(){ const tb=document.getElementById('topbar'); tb.innerHTML=''; topbar.forEach(t=>{ const a=document.createElement('a'); a.href=t.href||'#'; a.className='topbar-link'; a.innerText=t.label; tb.appendChild(a); }); }
-renderTopbar();
+async function moveDown(i) {
+  if (i >= games.length - 1) return;
+  const a = games.splice(i, 1)[0];
+  games.splice(i + 1, 0, a);
+  await saveGames(games);
+  renderGames();
+}
+
+/* ===========================
+   LOGO UPDATE
+   =========================== */
+document.getElementById("updateLogoBtn").addEventListener("click", () => {
+  const v = document.getElementById("siteLogoInput").value.trim();
+  if (!v) return alert("Enter logo URL");
+  localStorage.setItem("siteLogo", v);
+  document.getElementById("siteLogo").src = v;
+  alert("Logo updated.");
+});
 </script>
 </body>
 </html>
