@@ -1,154 +1,36 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
 <title>Unblocker Hub</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
 <style>
-  body {
-    margin: 0;
-    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Roboto, sans-serif;
-    background: url("./bg.png") no-repeat center/cover;
-    color: white;
-    overflow-x: hidden;
-  }
-
-  /* Overlay */
-  body::after {
-    content: "";
-    position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,0.25);
-    pointer-events: none;
-  }
-
-  /* TOPBAR */
-  nav {
-    position: fixed;
-    top: 45px;
-    left: 50%;
-    transform: translateX(-50%);
-    padding: 12px 40px;
-    background: rgba(255,255,255,0.08);
-    border-radius: 40px;
-    display: flex;
-    gap: 35px;
-    z-index: 10;
-    backdrop-filter: blur(12px) brightness(1.4);
-    border: 1px solid rgba(255,255,255,0.2);
-    box-shadow: 0 10px 40px rgba(0,0,0,0.45),
-                0 0 25px rgba(255,255,255,0.25);
-  }
-
-  nav a {
-    text-decoration: none;
-    color: white;
-    font-size: 18px;
-    font-weight: 600;
-    transition: 0.25s;
-  }
-
-  nav a.active {
-    color: #ffeb5a;
-    text-shadow: 0 0 10px #ffea7a;
-  }
-
-  nav a:hover {
-    color: #ffe066;
-  }
-
-  /* LOGO — FLOATING NEXT TO TOPBAR */
-  .logo {
-    position: fixed;
-    top: 32px;
-    left: calc(50% - 190px);
-    width: 60px;
-    height: 60px;
-    border-radius: 50%;
-    background: rgba(255,255,255,0.1);
-    backdrop-filter: blur(12px) brightness(1.2);
-    box-shadow: 0 10px 30px rgba(0,0,0,0.5),
-                0 0 20px rgba(255,255,255,0.25);
-    z-index: 11;
-  }
-
-  header {
-    margin-top: 160px;
-    text-align: center;
-    font-size: 48px;
-    font-weight: 700;
-    text-shadow: 0 0 25px rgba(255,255,255,0.3);
-  }
-
-  .container {
-    padding: 60px;
-    padding-top: 40px;
-    position: relative;
-    z-index: 2;
-  }
-
-  h2 {
-    font-size: 32px;
-    margin-bottom: 25px;
-    color: #ffeb65;
-  }
-
-  /* GAME GRID */
-  .game-list {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-    gap: 35px;
-  }
-
-  /* GAME CARD */
-  .game-card {
-    background: rgba(255,255,255,0.07);
-    padding: 25px;
-    border-radius: 25px;
-    backdrop-filter: blur(14px) saturate(180%) brightness(1.3);
-    border: 1px solid rgba(255,255,255,0.18);
-    box-shadow: 0 10px 30px rgba(0,0,0,0.4),
-                inset 0 0 20px rgba(255,255,255,0.15);
-    transition: 0.4s;
-    cursor: pointer;
-    transform-style: preserve-3d;
-  }
-
-  .game-card:hover {
-    transform: translateY(-12px);
-  }
-
-  .game-card img {
-    width: 100%;
-    border-radius: 20px;
-    margin-bottom: 12px;
-    box-shadow: 0 10px 20px rgba(0,0,0,0.45),
-                0 0 15px rgba(255,255,255,0.2);
-    transition: 0.3s;
-  }
-
-  .game-card img:hover {
-    transform: scale(1.07);
-  }
-
-  .game-card b {
-    display: block;
-    font-size: 22px;
-    margin-bottom: 5px;
-    text-shadow: 0 0 10px rgba(255,255,255,0.3);
-  }
-
-  .game-card p {
-    font-size: 14px;
-    opacity: 0.8;
-  }
+/* (keep your existing styles; identical to the version you pasted earlier) */
+:root{--glass-bg: rgba(255,255,255,0.07);--accent:#ffeb65}
+*{box-sizing:border-box}
+html,body{height:100%;margin:0;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,'Helvetica Neue',Arial;color:#fff}
+body{background:url('bg.png') center/cover no-repeat fixed;background-color:#071025; -webkit-font-smoothing:antialiased;}
+body::after{content:'';position:fixed;inset:0;background:rgba(0,0,0,0.25);pointer-events:none;z-index:0}
+nav{position:fixed;top:45px;left:50%;transform:translateX(-50%);padding:12px 40px;background:rgba(255,255,255,0.08);border-radius:40px;display:flex;gap:35px;z-index:10;backdrop-filter:blur(12px) brightness(1.4);border:1px solid rgba(255,255,255,0.2);box-shadow:0 10px 40px rgba(0,0,0,0.45),0 0 25px rgba(255,255,255,0.25)}
+nav a{text-decoration:none;color:white;font-size:18px;font-weight:600;transition:0.25s}
+nav a.active{color:#ffeb5a;text-shadow:0 0 10px #ffea7a}
+nav a:hover{color:#ffe066}
+.logo{position:fixed;top:32px;left:calc(50% - 190px);width:60px;height:60px;border-radius:50%;background:rgba(255,255,255,0.1);backdrop-filter:blur(12px) brightness(1.2);box-shadow:0 10px 30px rgba(0,0,0,0.5),0 0 20px rgba(255,255,255,0.25);z-index:11}
+header{margin-top:160px;text-align:center;font-size:48px;font-weight:700;text-shadow:0 0 25px rgba(255,255,255,0.3)}
+.container{padding:60px;padding-top:40px;position:relative;z-index:2}
+h2{font-size:32px;margin-bottom:25px;color:var(--accent)}
+.game-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:35px}
+.game-card{background:var(--glass-bg);padding:25px;border-radius:25px;backdrop-filter:blur(14px) saturate(180%) brightness(1.3);border:1px solid rgba(255,255,255,0.18);box-shadow:0 10px 30px rgba(0,0,0,0.4),inset 0 0 20px rgba(255,255,255,0.15);transition:0.4s;cursor:pointer;transform-style:preserve-3d}
+.game-card:hover{transform:translateY(-12px)}
+.game-card img{width:100%;border-radius:20px;margin-bottom:12px;box-shadow:0 10px 20px rgba(0,0,0,0.45),0 0 15px rgba(255,255,255,0.2);transition:0.3s}
+.game-card img:hover{transform:scale(1.07)}
+.game-card b{display:block;font-size:22px;margin-bottom:5px;text-shadow:0 0 10px rgba(255,255,255,0.3)}
+.game-card p{font-size:14px;opacity:0.8}
 </style>
 </head>
-
 <body>
-
-<img src="https://via.placeholder.com/60" class="logo">
-
+<img src="https://via.placeholder.com/60" class="logo" alt="logo">
 <nav>
   <a class="active" href="index.html">Home</a>
   <a href="apps.html">Apps</a>
@@ -162,33 +44,71 @@
 </div>
 
 <script>
-const games = JSON.parse(localStorage.getItem("games") || "[]");
+/* ---------- CONFIG (your bin id & key) ---------- */
+/* You provided these; keep them secret. */
+const JSONBIN_BIN_ID = "692e2648ae596e708f7d428b";
+const JSONBIN_API_KEY = "$2a$10$Z5j31D0.n/.IVQktOxo8AuNN1LPeRG9hMCN.XfGCeA0ZLSuPYwjny";
 
-function tilt(card, e) {
-  const r = card.getBoundingClientRect();
-  const x = e.clientX - r.left;
-  const y = e.clientY - r.top;
-  const rx = ((y - r.height/2) / r.height) * -15;
-  const ry = ((x - r.width/2) / r.width) * 15;
-  card.style.transform = `translateY(-10px) rotateX(${rx}deg) rotateY(${ry}deg)`;
+/* ---------- helper to read bin ---------- */
+async function fetchGamesFromJsonBin(){
+  try {
+    const res = await fetch(`https://api.jsonbin.io/v3/b/${JSONBIN_BIN_ID}/latest`, {
+      headers: {
+        'X-Master-Key': JSONBIN_API_KEY
+      }
+    });
+    if(!res.ok) throw new Error('JSONBin read failed: ' + res.status);
+    const payload = await res.json();
+    // JSONBin v3 wraps your object inside payload.record for many endpoints; handle both shapes
+    const data = payload && payload.record ? payload.record : payload;
+    if(Array.isArray(data.games)) return data.games;
+    if(Array.isArray(data)) return data; // older bins might be raw arrays
+    return [];
+  } catch(err){
+    console.warn('Could not fetch from JSONBin, falling back to localStorage. Error:', err);
+    return null; // signal fallback
+  }
 }
 
-function reset(card) {
-  card.style.transform = `translateY(0px) rotateX(0deg) rotateY(0deg)`;
+/* ---------- render ---------- */
+const list = document.getElementById('gameList');
+
+function renderGames(games){
+  list.innerHTML = '';
+  games.forEach((g,i)=>{
+    const c = document.createElement('div');
+    c.className = 'game-card';
+    c.innerHTML = `<img src="${g.logo || 'https://via.placeholder.com/640x360?text=No+Logo'}" alt="">
+                   <b>${g.name || 'Untitled'}</b>
+                   <p>${g.description || ''}</p>`;
+    c.onclick = () => location.href = 'launcher.html?game=' + i;
+    // tilt effect (kept)
+    c.onmousemove = (e)=>{
+      const r = c.getBoundingClientRect();
+      const x = e.clientX - r.left;
+      const y = e.clientY - r.top;
+      const rx = ((y - r.height/2) / r.height) * -15;
+      const ry = ((x - r.width/2) / r.width) * 15;
+      c.style.transform = `translateY(-10px) rotateX(${rx}deg) rotateY(${ry}deg)`;
+    };
+    c.onmouseleave = ()=> c.style.transform = 'translateY(0px) rotateX(0deg) rotateY(0deg)';
+    list.appendChild(c);
+  });
 }
 
-const list = document.getElementById("gameList");
-
-games.forEach((g, i) => {
-  const c = document.createElement("div");
-  c.className = "game-card";
-  c.innerHTML = `<img src="${g.logo}"><b>${g.name}</b><p>${g.description || ""}</p>`;
-  c.onclick = () => location.href = "launcher.html?game=" + i;
-  c.onmousemove = (e) => tilt(c, e);
-  c.onmouseleave = () => reset(c);
-  list.appendChild(c);
-});
+/* ---------- startup: try JSONBin, else local ---------- */
+(async function init(){
+  const remote = await fetchGamesFromJsonBin();
+  if(remote === null){
+    // fallback to localStorage
+    const games = JSON.parse(localStorage.getItem('games') || '[]');
+    renderGames(games);
+  } else {
+    // remote array
+    localStorage.setItem('games', JSON.stringify(remote)); // keep a local copy
+    renderGames(remote);
+  }
+})();
 </script>
-
 </body>
 </html>
