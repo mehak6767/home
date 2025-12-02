@@ -1,20 +1,20 @@
 [
   {
-    "name": "Snake",
-    "logo": "logos/snake.png",
-    "file": "games/snake.html",
-    "description": "Classic snake game."
+    "name": "Chat",
+    "logo": "https://em-content.zobj.net/source/apple/237/speech-balloon_1f4ac.png",
+    "file": "https://www.authpro.com/auth/mehakboy/?action=chat",
+    "description": "Supports Private Chatting with Your Friends!"
   },
   {
-    "name": "Tetris",
-    "logo": "logos/tetris.png",
-    "file": "games/tetris.html",
-    "description": "Tetris clone with modern graphics."
+    "name": "Minecraft 1.8",
+    "logo": "https://cdn2.steamgriddb.com/icon/34306fb932bcbe823afb4a0c675e3ece.png",
+    "file": "games/minecraft18.html",
+    "description": "Real Minecraft 1.8!"
   },
   {
-    "name": "2048",
-    "logo": "logos/2048.png",
-    "file": "games/2048.html",
-    "description": "Slide and merge tiles to reach 2048!"
+    "name": "1v1.lol",
+    "logo": "https://lh3.googleusercontent.com/Shj_hBe1ErpmWnJDFnfSyMSL2p3ID-VPQ-UF3t1iUkdJUj_mJ6Ea7GjnZeREW4RWBJ0z",
+    "file": "games/1v1lol.html",
+    "description": "The Famous 1v1.lol Game!"
   }
 ]
