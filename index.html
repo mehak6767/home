@@ -96,11 +96,12 @@ function renderGames(games){
       <p>${g.description || ''}</p>
     `;
 
-    // open launcher page instead of direct file
-    c.onclick = () => {
-      if(!g.file) return alert('No file specified for this game.');
-      window.location.href = `launcher.html?game=${encodeURIComponent(g.file)}&name=${encodeURIComponent(g.name)}`;
-    };
+// open launcher page using game index
+c.onclick = () => {
+  if(!g.file) return alert('No file specified for this game.');
+  window.location.href = `launcher.html?game=${i}`;
+};
+
 
     // tilt effect
     c.onmousemove = e=>{
