@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Games</title>
+
+<style>
+  body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #0f0f0fcc;
+    backdrop-filter: blur(20px);
+    color: white;
+  }
+
+  h1 {
+    text-align: center;
+    margin-top: 30px;
+    font-size: 40px;
+  }
+
+  .games-grid {
+    width: 90%;
+    max-width: 1200px;
+    margin: 40px auto;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 25px;
+  }
+
+  .game-card {
+    background: rgba(255, 255, 255, 0.08);
+    border-radius: 20px;
+    backdrop-filter: blur(15px);
+    padding: 15px;
+    cursor: pointer;
+    transition: 0.25s;
+    position: relative;
+  }
+
+  .game-card:hover {
+    transform: translateY(-5px);
+    background: rgba(255, 255, 255, 0.15);
+  }
+
+  .game-card img {
+    width: 100%;
+    border-radius: 15px; /* extra rounded corners */
+  }
+
+  .game-name {
+    text-align: center;
+    margin-top: 10px;
+    font-size: 18px;
+  }
+</style>
+</head>
+<body>
+
+<h1>Games</h1>
+
+<div class="games-grid" id="gamesGrid"></div>
+
+<script>
+// --- Load games.json and render ---
+async function loadGames() {
+  try {
+    const res = await fetch("games.json");
+    if (!res.ok) throw new Error("games.json failed to load");
+    const games = await res.json();
+
+    renderGames(games);
+  } catch (err) {
+    console.error("Failed to load games:", err);
+  }
+}
+
+function renderGames(games) {
+  const grid = document.getElementById("gamesGrid");
+  grid.innerHTML = "";
+
+  games.forEach(g => {
+    const card = document.createElement("div");
+    card.className = "game-card";
+
+    card.innerHTML = `
+      <img src="${g.image}" alt="${g.name}">
+      <div class="game-name">${g.name}</div>
+    `;
+
+    card.onclick = () => {
+      window.location.href =
+        `launcher.html?game=${encodeURIComponent(g.file)}&name=${encodeURIComponent(g.name)}`;
+    };
+
+    grid.appendChild(card);
+  });
+}
+
+loadGames();
+</script>
+
+</body>
+</html>
